@@ -1,105 +1,109 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-struct Node
+class Node
 {
+public:
 	int data;
 	Node *next;
 };
 
-Node *createNode(int val)
-{
-	Node *temp = new Node;
-	temp->data = val;
-	return temp;
-}
-
-// complete the functions
-
 class Queue
 {
-	Node *head;
-	Node *tail;
-	int s;
 
 public:
-	// constructor is called whenever an object of the class is declared
-	Queue()
-	{
-		s = 0;
-		head = NULL;
-		tail = NULL;
-	}
+	Node *front = NULL;
+	Node *rear = NULL;
 
-	// push the value at the back
 	void push(int val)
 	{
-		Node *temp = createNode(val);
-		if (head == NULL)
+		Node *temp = new Node();
+		temp->data = val;
+
+		if (front == NULL)
 		{
-			head = temp;
-			tail = temp;
+			front = temp;
+			rear = front;
 		}
+
 		else
 		{
-			tail->next = temp;
-			tail = temp;
+			rear->next = temp;
+			rear = rear->next;
 		}
-		s++;
-	}
-
-	int front()
-	{
-		return head->data;
-
-		return 0;
 	}
 
 	void pop()
 	{
-		Node *temp = head;
-		head = head->next;
-		delete temp;
-		s--;
-	}
+		if (front == rear)
+		{
+			cout << "Queue is Empty" << endl;
+		}
 
-	int size()
-	{
-		return s;
+		front = front->next;
 	}
 
 	bool isEmpty()
 	{
-		if (s == 0)
-		{
-			return true;
-		}
+		if (front == rear)
+			return 1;
 		else
+			return 0;
+	}
+
+	int size()
+	{
+		Node *temp = front;
+		int count = 0;
+
+		while (temp != NULL)
 		{
-			return false;
+			count++;
+			temp = temp->next;
 		}
+
+		return count;
+	}
+
+	void traverse()
+	{
+		Node *temp = front;
+
+		while (temp != NULL)
+		{
+			cout << temp->data << " ";
+			temp = temp->next;
+		}
+
+		cout << endl;
 	}
 };
 
 int main()
 {
-	Queue q; // constructor is called on this line
-	q.push(4);
-	cout << "front: " << q.front() << "\n";
-	q.pop();
-	cout << "size: " << q.size() << "\n";
-	cout << "empty: " << q.isEmpty() << "\n";
+	Queue q;
+	int n;
+	cin >> n;
 
-	q.push(5);
-	q.push(3);
-	cout << "front: " << q.front() << "\n";
-	q.pop();
-	cout << "size: " << q.size() << "\n";
-	cout << "empty: " << q.isEmpty() << "\n";
+	for (int i = 0; i < n; i++)
+	{
+		int val;
+		cin >> val;
 
-	cout << "front: " << q.front() << "\n";
+		q.push(val);
+	}
+
+	q.traverse();
+
 	q.pop();
-	cout << "size: " << q.size() << "\n";
-	cout << "empty: " << q.isEmpty() << "\n";
-	return 0;
+
+	q.traverse();
+
+	cout << "Is Empty -> " << q.isEmpty() << endl;
+
+	cout << "Size -> " << q.size() << endl;
+
+	cout << endl
+		 << "Front -> " << q.front->data << endl
+		 << "Rear -> " << q.rear->data << endl;
 }
